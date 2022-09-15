@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     cost: DataTypes.INTEGER
   }, {});
   Product.associate = function(models) {
-    Product.belongsTo(models.Record)
+    Product.hasMany(models.RecordedProducts)
   };
   return Product;
 };

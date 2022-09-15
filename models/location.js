@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING
   }, {});
   Location.associate = function(models) {
-    // associations can be defined here
+    Location.hsaMany(models.Record)
   };
   return Location;
 };

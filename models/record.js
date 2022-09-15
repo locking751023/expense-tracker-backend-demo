@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   Record.associate = function(models) {
     Record.belongsTo(models.User)
     Record.belongsTo(models.Location)
-    Record.hasMany(models.Product)
+    Record.hasMany(models.RecordedProducts)
   };
   return Record;
 };
