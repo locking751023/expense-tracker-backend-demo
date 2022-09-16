@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const app = express()
 const PORT = 3000
 const api = require('./routers/index')
+const db = require('./models')
 
 app.use(express.urlencoded({ extended: true })) 
 app.use(methodOverride('_method')) 

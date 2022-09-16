@@ -1,12 +1,20 @@
 'use strict';
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  const Record = sequelize.define('Record', {
+  class Record extends Model {
+    static associations(models) {
+      Record.belongsTo(models.User, { foreignKey: 'userId' })
+      Record.belongsTo(models.Location, { foreignKey: 'locationId' })
+      Record.hsaMany(models.RecordedProduct, { foreignKey: 'recordId' })
+    }
+  }
+  Record.init({
     date: DataTypes.STRING
-  }, {});
-  Record.associate = function(models) {
-    Record.belongsTo(models.User)
-    Record.belongsTo(models.Location)
-    Record.hasMany(models.RecordedProducts)
-  };
+  }, {
+    sequelize,
+    modelName: 'Record',
+    tableName: 'Records',
+    underscored: true
+  });
   return Record;
 };

@@ -1,13 +1,21 @@
 'use strict';
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('Product', {
+  class Product extends Model {
+    static associations(models) {
+      Product.hsaMany(models.RecordedProduct, { foreignKey: 'productId' })
+    }
+  }
+  Product.init({
     name: DataTypes.STRING,
     price: DataTypes.INTEGER,
     unit: DataTypes.STRING,
     cost: DataTypes.INTEGER
-  }, {});
-  Product.associate = function(models) {
-    Product.hasMany(models.RecordedProducts)
-  };
+  }, {
+    sequelize,
+    modelName: 'Product',
+    tableName: 'Products',
+    underscored: true
+  });
   return Product;
 };

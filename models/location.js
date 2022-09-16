@@ -1,10 +1,18 @@
 'use strict';
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  const Location = sequelize.define('Location', {
+  class Location extends Model {
+    static associations(models) {
+      Location.hsaMany(models.Record, { foreignKey: 'locationId' })
+    }
+  }
+  Location.init({
     name: DataTypes.STRING
-  }, {});
-  Location.associate = function(models) {
-    Location.hsaMany(models.Record)
-  };
+  }, {
+    sequelize,
+    modelName: 'Location',
+    tableName: 'Locations',
+    underscored: true
+  });
   return Location;
 };
