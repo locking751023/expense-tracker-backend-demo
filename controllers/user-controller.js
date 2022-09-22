@@ -37,10 +37,6 @@ const userController = {
     } catch (err) {
       next(err)
     }
-  },
-  logout: (req, res) => {
-    req.logout()
-    res.redirect('/api/login')
   }
 }
 

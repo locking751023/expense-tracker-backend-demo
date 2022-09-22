@@ -9,8 +9,6 @@ const { authenticated, authenticatedAdmin } = require('../middleware/auth')
 // user
 router.post('/login',passport.authenticate('local', { session: false }), userController.login)
 router.post('/register', userController.register)
-router.get('/logout', userController.logout)
-
 router.use('/admin',authenticated, authenticatedAdmin, admin)
 
 router.get('/records',authenticated, recordController.getRecords)
