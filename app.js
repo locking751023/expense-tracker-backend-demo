@@ -1,12 +1,18 @@
 const express = require('express')
 const methodOverride = require('method-override')
+const passport = require('passport')
 const bcrypt = require('bcryptjs')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT
 const api = require('./routers/index')
-const db = require('./models')
 
 app.use(express.urlencoded({ extended: true })) 
+app.use(passport.initialize())
 app.use(methodOverride('_method')) 
 app.use('/api', api)
 
