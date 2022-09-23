@@ -6,12 +6,13 @@ const bcrypt = require('bcryptjs')
 
 const { User, Record, RecordedProduct } = require('../models')
 
-passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, cb) => {
+passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback:true }, (req, email, password, cb) => {
   User.findOne({ where: { email }})
     .then(user => {
-      if (!user) return cb(null, false)
+      if (!user) return cb(null, false, { status: 'error', message: 'email錯誤或尚未註冊!'})
       bcrypt.compare(password, user.password).then(result => {
-        if (!result) return cb(null, false)
+        if (!result) return cb(null, false, { status: 'error', message: 'email或密碼錯誤!' })
+        req.user = user
         return cb(null, user)
       })
     })
@@ -19,14 +20,16 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, cb)
 
 const jwtOptions = {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET
+  secretOrKey: process.env.JWT_SECRET,
+  passReqToCallback: true
 }
 
-passport.use(new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
+passport.use(new JWTStrategy(jwtOptions, (req, jwtPayload, cb) => {
   User.findByPk(jwtPayload.id, {
     include: Record
   })
     .then(user => {
+      req.user = user
       cb(null, user)
     })
     .catch(err => cb(err))

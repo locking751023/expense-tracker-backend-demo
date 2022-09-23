@@ -26,7 +26,7 @@ const userController = {
     try {
       const userData = req.user.toJSON()
       delete userData.password
-      const token = jwt.sign(userData, process.env.JWT_SECRET)
+      const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '10s'})
       res.status(200).json({
         status: 'success',
         data: {
