@@ -13,8 +13,8 @@ router.use('/admin', authenticated, authenticatedAdmin, admin)
 
 router.get('/records', authenticated, recordController.getRecords)
 router.post('/record/new', authenticated, recordController.addRecord)
+router.put('/record/:rid/edit', authenticated, recordController.putRecord)
 router.get('/record/:rid', authenticated, recordController.getRecord)
-router.post('/record/:rid', authenticated, recordController.postRecord)
 router.delete('/record/:rid', authenticated, recordController.deleteRecord)
 
 

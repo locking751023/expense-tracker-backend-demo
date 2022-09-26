@@ -12,6 +12,7 @@ const PORT = process.env.PORT
 const api = require('./routers/index')
 
 app.use(express.urlencoded({ extended: true })) 
+app.use(express.json()) 
 app.use(passport.initialize())
 app.use(methodOverride('_method')) 
 app.use('/api', api)

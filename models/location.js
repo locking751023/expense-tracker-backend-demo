@@ -2,8 +2,8 @@
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Location extends Model {
-    static associations(models) {
-      Location.hsaMany(models.Record, { foreignKey: 'locationId' })
+    static associate(models) {
+      Location.hasMany(models.Record, { foreignKey: 'locationId' })
     }
   }
   Location.init({
