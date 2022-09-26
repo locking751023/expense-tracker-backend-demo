@@ -17,8 +17,12 @@ const userController = {
           email,
           password: hash
       }))
-      .then(() => {
-        res.status(201).json({ status: 'success', message: '帳號註冊成功！'})
+      .then((result) => {
+        const user = {
+          ...result.toJSON()
+        }
+        delete user.password
+        res.status(201).json({ status: 'success', message: '帳號註冊成功！', user})
       })
       .catch(err => next(err))
   },
