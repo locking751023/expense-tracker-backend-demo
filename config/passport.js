@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 const { User, Record, RecordedProduct } = require('../models')
 
-passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback:true }, (req, email, password, cb) => {
+passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, cb) => {
   User.findOne({ where: { email }})
     .then(user => {
       if (!user) return cb(null, false, { status: 'error', message: 'email錯誤或尚未註冊!'})

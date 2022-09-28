@@ -10,7 +10,6 @@ const loginAuthenticated = (req, res, next) => {
 const authenticated = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {
     if (err || !user) return res.status(401).json({ status: 'error', message: 'Unauthorized!' })
-    console.log("user:", user.toJSON())
     next()
   })(req, res, next)
 }
