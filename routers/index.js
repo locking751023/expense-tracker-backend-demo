@@ -6,6 +6,7 @@ const userController = require('../controllers/user-controller')
 const { loginAuthenticated, authenticated, authenticatedAdmin } = require('../middleware/auth')
 
 // user
+router.get('/auth', authenticated, userController.getUser)
 router.post('/login', loginAuthenticated, userController.login)
 router.post('/register', userController.register)
 router.use('/admin', authenticated, authenticatedAdmin, admin)
@@ -16,6 +17,7 @@ router.post('/record/new', authenticated, recordController.addRecord)
 router.put('/record/:rid/edit', authenticated, recordController.putRecord)
 router.get('/record/:rid', authenticated, recordController.getRecord)
 router.delete('/record/:rid', authenticated, recordController.deleteRecord)
+
 
 
 

@@ -3,6 +3,15 @@ const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 
 const userController = {
+  getUser: async (req, res, next) => {
+    try {
+      const user = req.user.toJSON()
+      delete user.password
+      return res.status(200).json({ status: 'success', user })
+    } catch (err) {
+      next(err)
+    }
+  },
   register: async (req, res, next) => {
     try {
       const { name, email, password, checkPassword } = req.body
