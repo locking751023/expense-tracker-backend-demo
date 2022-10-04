@@ -1,4 +1,4 @@
-const { Record, Location, RecordedProduct } = require('../models')
+const { Record, Location, RecordedProduct, Product } = require('../models')
 const dayjs = require('dayjs')
 const CustomParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(CustomParseFormat)
@@ -22,7 +22,7 @@ const recordController = {
       const recordId = req.params.rid
       const record = await Record.findByPk(recordId, {
         order: [['date', 'DESC']],
-        include: [Location, RecordedProduct]
+        include: [Location, {model: RecordedProduct, include: [Product]}]
       })
       if (req.user.id !== record.userId) return res.status(400).json({ status: 'error', message: '權限不足'})
       return res.status(200).json({ status: 'success', record })
@@ -32,8 +32,9 @@ const recordController = {
   },
   addRecord: async (req, res, next) => {
     try {
+      console.log('req.body:', req.body.data)
       const { date, locationId, products } = req.body.data
-      if (!dayjs(date, 'YYYY-MM-DD', true).isValid()) return res.status(400).json({ status: 'error', message: '請確認輸入日期是否有效' })
+      if (!dayjs(date).isValid()) return res.status(400).json({ status: 'error', message: '請確認輸入日期是否有效' })
       const location = await Location.findByPk(locationId)
       if (!location) return res.status(400).json({ status: 'error', message: '請確認地點輸入正確'})
       const record = await Record.create({

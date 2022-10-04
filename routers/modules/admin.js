@@ -3,12 +3,10 @@ const router = express.Router()
 const adminController = require('../../controllers/admin-controller')
 
 //product
-router.get('/products', adminController.getProducts)
 router.post('/product/new', adminController.addProduct)
 router.put('/product/:pid/edit', adminController.updateProduct)
 router.delete('/product/:pid/delete', adminController.deleteProduct)
 //location
-router.get('/locations', adminController.getLocations)
 router.post('/location/new', adminController.addLocation)
 router.put('/location/:lid/edit', adminController.updateLocation)
 router.delete('/location/:lid/delete', adminController.deleteLocation)

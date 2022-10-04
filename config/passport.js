@@ -4,10 +4,15 @@ const JWTStrategy = require('passport-jwt').Strategy
 const ExtractJWT = require('passport-jwt').ExtractJwt
 const bcrypt = require('bcryptjs')
 
-const { User, Record, RecordedProduct } = require('../models')
+const { User, Record, RecordedProduct, Location } = require('../models')
 
 passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, cb) => {
-  User.findOne({ where: { email }})
+  User.findOne({
+    where: { email },
+    include: [
+      { model: Record, order: [['date', 'DESC']], include: [Location, RecordedProduct] }
+    ]
+  })
     .then(user => {
       if (!user) return cb(null, false, { status: 'error', message: 'email錯誤或尚未註冊!'})
       bcrypt.compare(password, user.password).then(result => {
@@ -26,7 +31,9 @@ const jwtOptions = {
 
 passport.use(new JWTStrategy(jwtOptions, (req, jwtPayload, cb) => {
   User.findByPk(jwtPayload.id, {
-    include: Record
+    include: [
+      { model: Record, order: [['date', 'DESC']], include: [Location, RecordedProduct] }
+    ]
   })
     .then(user => {
       req.user = user

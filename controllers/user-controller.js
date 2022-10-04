@@ -25,11 +25,11 @@ const userController = {
           email,
           password: hash
       })
-      const removePassword = {
+      const userWithoutPassword = {
         ...newUser.toJSON(),
       }
-      delete removePassword.password
-      res.status(201).json({ status: 'success', message: '帳號註冊成功！', removePassword})
+      delete userWithoutPassword.password
+      res.status(201).json({ status: 'success', message: '帳號註冊成功！', userWithoutPassword})
     } catch (err) {
       next(err)
     }
@@ -39,7 +39,11 @@ const userController = {
       const { expiresIn } = req.body
       const userData = req.user.toJSON()
       delete userData.password
-      const token = await jwt.sign(userData, process.env.JWT_SECRET, { expiresIn })
+      const payload = {
+        ...userData,
+      }
+      delete payload.Records
+      const token = await jwt.sign(payload, process.env.JWT_SECRET, { expiresIn })
       res.status(200).json({
         status: 'success',
         data: {

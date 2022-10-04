@@ -1,14 +1,6 @@
 const { Product, Location, User, Record, RecordedProduct } = require('../models')
 
 const adminController = {
-  getProducts: async (req, res, next) => {
-    try {
-      const products = await Product.findAll({ raw: true, nest: true })
-      return res.status(200).json({ status: 'success', products})
-    } catch (err) {
-      next(err)
-    }
-  },
   addProduct: async (req, res, next) => {
     try {
       const { name, price, unit, cost } = req.body
@@ -52,14 +44,6 @@ const adminController = {
       const deletedProduct = await product.destroy()
       return res.status(200).json({ status: 'success', deletedProduct})
     }catch(err) {
-      next(err)
-    }
-  },
-  getLocations: async (req, res, next) => {
-    try {
-      const locations = await Location.findAll({ raw: true, nest: true })
-      return res.status(200).json({ status: 'success', locations })
-    } catch (err) {
       next(err)
     }
   },

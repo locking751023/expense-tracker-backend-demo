@@ -3,6 +3,8 @@ const router = express.Router()
 const admin = require('./modules/admin')
 const recordController = require('../controllers/record-controller')
 const userController = require('../controllers/user-controller')
+const productController = require('../controllers/product-controller')
+const locationController = require('../controllers/location-controller')
 const { loginAuthenticated, authenticated, authenticatedAdmin } = require('../middleware/auth')
 
 // user
@@ -18,6 +20,11 @@ router.put('/record/:rid/edit', authenticated, recordController.putRecord)
 router.get('/record/:rid', authenticated, recordController.getRecord)
 router.delete('/record/:rid', authenticated, recordController.deleteRecord)
 
+//product
+router.get('/products', authenticated, productController.getProducts)
+
+//location
+router.get('/locations', authenticated, locationController.getLocations)
 
 
 
