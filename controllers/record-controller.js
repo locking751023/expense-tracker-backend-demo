@@ -32,8 +32,8 @@ const recordController = {
   },
   addRecord: async (req, res, next) => {
     try {
-      console.log('req.body:', req.body.data)
       const { date, locationId, products } = req.body.data
+      if (!date) return res.status(400).json({ status: 'error', message: '日期為必填資訊' })
       if (!dayjs(date).isValid()) return res.status(400).json({ status: 'error', message: '請確認輸入日期是否有效' })
       const location = await Location.findByPk(locationId)
       if (!location) return res.status(400).json({ status: 'error', message: '請確認地點輸入正確'})
@@ -79,6 +79,7 @@ const recordController = {
           where: { id: product.id }
         })
       })
+
       res.status(200).json({ status: 'success', message: '資料修改成功' })
     } catch (err) {
       next(err)
