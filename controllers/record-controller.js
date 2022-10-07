@@ -10,7 +10,7 @@ const recordController = {
       const records = await Record.findAll({
         where: { userId },
         order: [['date', 'DESC']],
-        include: [Location, RecordedProduct]
+        include: [Location, {model: RecordedProduct, include: [Product]}]
       })
       return res.status(200).json({ status: 'success', records })
     } catch (err) {
