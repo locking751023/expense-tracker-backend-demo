@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   RecordedProduct.init({
     historyPrice: DataTypes.INTEGER,
     historyCost: DataTypes.INTEGER,
-    amount: DataTypes.INTEGER,
-    sendBack: DataTypes.INTEGER,
+    amount: DataTypes.FLOAT,
+    sendBack: DataTypes.FLOAT,
     recordId: DataTypes.INTEGER,
     productId: DataTypes.INTEGER
   }, {
