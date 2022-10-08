@@ -11,12 +11,11 @@ const PORT = process.env.PORT
 const api = require('./routers/index')
 
 const corsOptions = {
-  origin: [
-    'http://localhost:3001',
-    'https://tommy1023.github.io'
-  ],
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  preflightContinue: false,
   allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions))
