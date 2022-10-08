@@ -13,6 +13,7 @@ const api = require('./routers/index')
 const corsOptions = {
   origin: [
     'http://localhost:3001',
+    'https://tommy1023.github.io'
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: ['Content-Type', 'Authorization'],
