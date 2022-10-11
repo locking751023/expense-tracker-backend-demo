@@ -90,8 +90,8 @@ const recordController = {
       const recordId = req.params.rid
       const deletedRecordedProduct = await RecordedProduct.destroy({ where: { recordId }})
       const record = await Record.findByPk(recordId)
-      if (!record || !deletedRecordedProduct) return res.status(400).json({ status: 'error', message: '資料不存在' })
-      if (record.userId !== req.user.id) return res.status(400).json({ status: 'error', message: '權限不足'})
+      if (!record) return res.status(400).json({ status: 'error', message: '資料不存在' })
+      if (record.userId !== req.user.id && !req.user.isAdmin) return res.status(400).json({ status: 'error', message: '權限不足'})
       const deletedRecord = await record.destroy()
       return res.status(200).json({ status: 'success', deletedRecord, deletedRecordedProduct})
     } catch (err) {
