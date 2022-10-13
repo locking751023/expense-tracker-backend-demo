@@ -3,27 +3,27 @@ const { Product, Location, User, Record, RecordedProduct } = require('../models'
 const adminController = {
   addProduct: async (req, res, next) => {
     try {
-      const { name, price, unit, cost } = req.body
+      const { name, price, unit, cost } = req.body.data
       if (!name || !price || !unit || !cost) return res.status(400).json({ status: 'error', message: '所有欄位為必填' })
-      if (cost > price) return res.status(400).json({ status: 'error', message:"請確認price及cost輸入是否正確"})
+      if (cost > price) return res.status(400).json({ status: 'error', message: "請確認price及cost輸入是否正確" })
       const isNameRepeat = await Product.findOne({ where: { name } })
-      if (isNameRepeat) return res.status(400).json({ status: 'error', message: '產品名稱已存在'})
+      if (isNameRepeat) return res.status(400).json({ status: 'error', message: '產品名稱已存在' })
       const newProduct = await Product.create({
         name,
         price,
         unit,
         cost
       })
-      return res.status(200).json({ status: 'success', newProduct})
-    }catch(err) {
+      return res.status(200).json({ status: 'success', newProduct })
+    } catch (err) {
       next(err)
     }
   },
   updateProduct: async (req, res, next) => {
     try {
-      const { id, name, price, unit, cost } = req.body
+      const { name, price, unit, cost } = req.body.data
       if (!name || !price || !unit || !cost) return res.status(400).json({ status: 'error', message: '所有欄位為必填' })
-      if (cost > price) return res.status(400).json({ status: 'error', message:"請確認price及cost輸入是否正確"})
+      if (cost > price) return res.status(400).json({ status: 'error', message: "請確認price及cost輸入是否正確" })
       const product = await Product.findByPk(req.params.pid)
       if (!product) return res.status(400).json({ status: 'error', message: '產品資料不存在' })
       const updatedProduct = await product.update({
@@ -33,23 +33,23 @@ const adminController = {
         cost
       })
       return res.status(200).json({ status: 'success', updatedProduct })
-    }catch(err) {
+    } catch (err) {
       next(err)
     }
   },
   deleteProduct: async (req, res, next) => {
-    try{
+    try {
       const product = await Product.findByPk(req.params.pid)
       if (!product) return res.status(400).json({ status: 'error', message: '產品資料不存在' })
       const deletedProduct = await product.destroy()
-      return res.status(200).json({ status: 'success', deletedProduct})
-    }catch(err) {
+      return res.status(200).json({ status: 'success', deletedProduct })
+    } catch (err) {
       next(err)
     }
   },
   addLocation: async (req, res, next) => {
     try {
-      const { name } = req.body
+      const { name } = req.body.data
       if (!name) return res.status(400).json({ status: 'error', message: '市場名稱為必填' })
       const isLocationRepeat = await Location.findOne({ where: { name } })
       if (isLocationRepeat) return res.status(400).json({ status: 'error', message: '市場名稱已存在' })
@@ -63,16 +63,16 @@ const adminController = {
   },
   updateLocation: async (req, res, next) => {
     try {
-      const { name } = req.body
+      const { name } = req.body.data
       const location = await Location.findByPk(req.params.lid)
-      if (!location) return res.status(400).json({ status: 'error', message: '資料不存在'})
+      if (!location) return res.status(400).json({ status: 'error', message: '資料不存在' })
       if (!name) return res.status(400).json({ status: 'error', message: '市場名稱為必填' })
       const isLocationRepeat = await Location.findOne({ where: { name } })
       if (isLocationRepeat) return res.status(400).json({ status: 'error', message: '市場名稱已存在' })
       const updateLocation = await location.update({
         name
       })
-      return res.status(200).json({ status: 'success', updateLocation})
+      return res.status(200).json({ status: 'success', updateLocation })
     } catch (err) {
       next(err)
     }
@@ -82,13 +82,13 @@ const adminController = {
       const location = await Location.findByPk(req.params.lid)
       if (!location) return res.status(400).json({ status: 'error', message: '資料不存在' })
       const deletedLocation = await location.destroy()
-      return res.status(200).json({ status: 'success', deletedLocation})
+      return res.status(200).json({ status: 'success', deletedLocation })
     } catch (err) {
       next(err)
     }
   },
   getUsers: async (req, res, next) => {
-    try{
+    try {
       const users = await User.findAll({
         include: [
           { model: Record, include: RecordedProduct }
@@ -99,7 +99,7 @@ const adminController = {
         delete newUser.password
         return newUser
       })
-      return res.status(200).json({ status: 'success', userRemovePassword})
+      return res.status(200).json({ status: 'success', userRemovePassword })
     } catch (err) {
       next(err)
     }
@@ -115,8 +115,8 @@ const adminController = {
         Record.destroy({ where: { id: record.id } })
       })
       const deletedUser = await user.destroy()
-      return res.status(200).json({ status: 'success', message: '使用者資料已全部完除', deletedUser})
-    }catch(err) {
+      return res.status(200).json({ status: 'success', message: '使用者資料已全部完除', deletedUser })
+    } catch (err) {
       next(err)
     }
   },
@@ -128,7 +128,7 @@ const adminController = {
       })
       return res.status(200).json({ status: 'success', records })
     } catch (err) {
-        next(err)
+      next(err)
     }
   },
   deleteRecord: async (req, res, next) => {
@@ -136,9 +136,9 @@ const adminController = {
       const recordId = req.params.rid
       const record = await Record.findByPk(recordId)
       if (!record) return res.status(400).json({ status: 'error', message: '資料不存在' })
-      const deletedRecordedProduct = await RecordedProduct.destroy({ where: { recordId }})
+      const deletedRecordedProduct = await RecordedProduct.destroy({ where: { recordId } })
       const deletedRecord = await record.destroy()
-      return res.status(200).json({ status: 'success', deletedRecord, deletedRecordedProduct})
+      return res.status(200).json({ status: 'success', deletedRecord, deletedRecordedProduct })
     } catch (err) {
       next(err)
     }
