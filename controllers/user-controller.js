@@ -14,25 +14,27 @@ const userController = {
   },
   updateUser: async (req, res, next) => {
     try {
-      const { name, email, password, checkPassword } = req.body.data
+      const { userName, userEmail, password, checkPassword } = req.body.data
       const originUserData = await User.findByPk(req.params.uid)
-      let hash
+      let hash, reload
       if (password) {
         if (password !== checkPassword) return res.status(400).json({ status: 'error', message: '請確認密碼輸入一致！' })
         const passwordCompare = await bcrypt.compare(password, originUserData.password)
         if (passwordCompare) return res.status(400).json({ status: 'error', message: '新舊密碼不可相同' })
         hash = await bcrypt.hash(password, 10)
+        reload = true
       }
-      if (email !== originUserData.email) {
-        const isEmailRepeat = await User.findOne({ where: { email } })
+      if (userEmail !== originUserData.email) {
+        const isEmailRepeat = await User.findOne({ where: { email: userEmail } })
         if (isEmailRepeat) return res.status(400).json({ status: 'error', message: 'email 已被註冊！' })
+        reload = true
       }
       const updateData = await originUserData.update({
-        name: name || originUserData.name,
-        email: email || originUserData.email,
+        name: userName || originUserData.name,
+        email: userEmail || originUserData.email,
         password: hash || originUserData.password,
       })
-      return res.status(200).json({ status: 'success', updateData })
+      return res.status(200).json({ status: 'success', updateData, reload })
     } catch (err) {
       next(err)
     }
