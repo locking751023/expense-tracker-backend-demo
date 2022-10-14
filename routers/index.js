@@ -11,6 +11,7 @@ const { loginAuthenticated, authenticated, authenticatedAdmin } = require('../mi
 router.get('/auth', authenticated, userController.getUser)
 router.post('/login', loginAuthenticated, userController.login)
 router.post('/register', userController.register)
+router.put('/user/:uid/edit', authenticated, userController.updateUser)
 router.use('/admin', authenticated, authenticatedAdmin, admin)
 
 //record

@@ -115,7 +115,7 @@ const adminController = {
         Record.destroy({ where: { id: record.id } })
       })
       const deletedUser = await user.destroy()
-      return res.status(200).json({ status: 'success', message: '使用者資料已全部完除', deletedUser })
+      return res.status(200).json({ status: 'success', message: '使用者資料已全部刪除', deletedUser })
     } catch (err) {
       next(err)
     }
