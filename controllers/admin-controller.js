@@ -110,10 +110,10 @@ const adminController = {
         include: [Record]
       })
       if (!user) return res.status(400).json({ status: 'error', message: '使用者資料不存在' })
-      await user.Records.map(record => {
-        RecordedProduct.destroy({ where: { recordId: record.id } })
-        Record.destroy({ where: { id: record.id } })
-      })
+      if (user.isAdmin) return res.status(400).json({ status: 'error', message: '權限不足' })
+      const recordIdArray = user.Records.map(record => record.id)
+      await RecordedProduct.destroy({ where: { recordId: recordIdArray } })
+      await Record.destroy({ where: { id: recordIdArray } })
       const deletedUser = await user.destroy()
       return res.status(200).json({ status: 'success', message: '使用者資料已全部刪除', deletedUser })
     } catch (err) {
