@@ -1,6 +1,6 @@
 # Expense tracker backend server
 
-Expense-Tracker-Frontend: https://github.com/Tommy1023/expense-tracker
+Expense-Tracker-Frontend: https://github.com/locking751023/expense-tracker-demo
 
 ## 環境建置與需求 
 [![node version](https://img.shields.io/badge/node-v16.15.1-impotent?style=flat "node")](https://nodejs.org/en/)
